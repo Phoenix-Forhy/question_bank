@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ArabidopsisThalianaMapper">
+    
+    <resultMap type="ArabidopsisThaliana" id="ArabidopsisThalianaResult">
+        <result property="pathway"    column="pathway"    />
+        <result property="count"    column="count"    />
+        <result property="bgRatio"    column="bg_ratio"    />
+        <result property="geneRatio"    column="gene_ratio"    />
+        <result property="pvalue"    column="pvalue"    />
+        <result property="bonferroni"    column="bonferroni"    />
+        <result property="genes"    column="genes"    />
+        <result property="fdr"    column="fdr"    />
+        <result property="benjamini"    column="benjamini"    />
+    </resultMap>
+
+    <sql id="selectArabidopsisThalianaVo">
+        select pathway, count, bg_ratio, gene_ratio, pvalue, bonferroni, genes, fdr, benjamini from arabidopsis_thaliana
+    </sql>
+
+    <select id="selectArabidopsisThalianaList" parameterType="ArabidopsisThaliana" resultMap="ArabidopsisThalianaResult">
+        <include refid="selectArabidopsisThalianaVo"/>
+        <where>  
+            <if test="pathway != null  and pathway != ''"> and pathway = #{pathway}</if>
+            <if test="count != null "> and count = #{count}</if>
+            <if test="bgRatio != null "> and bg_ratio = #{bgRatio}</if>
+            <if test="geneRatio != null "> and gene_ratio = #{geneRatio}</if>
+            <if test="pvalue != null "> and pvalue = #{pvalue}</if>
+            <if test="bonferroni != null "> and bonferroni = #{bonferroni}</if>
+            <if test="genes != null  and genes != ''"> and genes = #{genes}</if>
+            <if test="fdr != null "> and fdr = #{fdr}</if>
+            <if test="benjamini != null "> and benjamini = #{benjamini}</if>
+        </where>
+    </select>
+    
+    <select id="selectArabidopsisThalianaByPathway" parameterType="String" resultMap="ArabidopsisThalianaResult">
+        <include refid="selectArabidopsisThalianaVo"/>
+        where pathway = #{pathway}
+    </select>
+        
+    <insert id="insertArabidopsisThaliana" parameterType="ArabidopsisThaliana">
+        insert into arabidopsis_thaliana
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pathway != null">pathway,</if>
+            <if test="count != null">count,</if>
+            <if test="bgRatio != null">bg_ratio,</if>
+            <if test="geneRatio != null">gene_ratio,</if>
+            <if test="pvalue != null">pvalue,</if>
+            <if test="bonferroni != null">bonferroni,</if>
+            <if test="genes != null">genes,</if>
+            <if test="fdr != null">fdr,</if>
+            <if test="benjamini != null">benjamini,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pathway != null">#{pathway},</if>
+            <if test="count != null">#{count},</if>
+            <if test="bgRatio != null">#{bgRatio},</if>
+            <if test="geneRatio != null">#{geneRatio},</if>
+            <if test="pvalue != null">#{pvalue},</if>
+            <if test="bonferroni != null">#{bonferroni},</if>
+            <if test="genes != null">#{genes},</if>
+            <if test="fdr != null">#{fdr},</if>
+            <if test="benjamini != null">#{benjamini},</if>
+         </trim>
+    </insert>
+
+    <update id="updateArabidopsisThaliana" parameterType="ArabidopsisThaliana">
+        update arabidopsis_thaliana
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="count != null">count = #{count},</if>
+            <if test="bgRatio != null">bg_ratio = #{bgRatio},</if>
+            <if test="geneRatio != null">gene_ratio = #{geneRatio},</if>
+            <if test="pvalue != null">pvalue = #{pvalue},</if>
+            <if test="bonferroni != null">bonferroni = #{bonferroni},</if>
+            <if test="genes != null">genes = #{genes},</if>
+            <if test="fdr != null">fdr = #{fdr},</if>
+            <if test="benjamini != null">benjamini = #{benjamini},</if>
+        </trim>
+        where pathway = #{pathway}
+    </update>
+
+    <delete id="deleteArabidopsisThalianaByPathway" parameterType="String">
+        delete from arabidopsis_thaliana where pathway = #{pathway}
+    </delete>
+
+    <delete id="deleteArabidopsisThalianaByPathways" parameterType="String">
+        delete from arabidopsis_thaliana where pathway in 
+        <foreach item="pathway" collection="array" open="(" separator="," close=")">
+            #{pathway}
+        </foreach>
+    </delete>
+</mapper>
