@@ -189,25 +189,25 @@
         <div class="content-body-content" style="width: 1450px">
           <!-- 按钮控制隐藏 -->
           <!-- <button class="button-control" @click="showTable = !showTable">{{ showTable ? 'Hide' : 'Show' }} Table</button> -->
-          <el-table  :data="tableData" height="250" border class="el-table-style" style="width: 100%; text-align: center;">
+          <el-table  :data="thalianaList" height="250" border class="el-table-style" style="width: 100%; text-align: center;">
 
-            <el-table-column fixed prop="Pathway" label="pathway" width="260">
+            <el-table-column fixed prop="pathway" label="pathway" width="260">
             </el-table-column>
             <el-table-column prop="count" label="count" width="70">
             </el-table-column>
-            <el-table-column prop="BgRatio" label="BgRatio" width="130">
+            <el-table-column prop="bgRatio" label="bgRatio" width="130">
             </el-table-column>
-            <el-table-column prop="GeneRatio" label="GeneRatio" width="130">
+            <el-table-column prop="geneRatio" label="geneRatio" width="130">
             </el-table-column>
-            <el-table-column prop="pvalue" label="P.value" width="130">
+            <el-table-column prop="pvalue" label="pvalue" width="130">
             </el-table-column>
-            <el-table-column prop="Bonferroni" label="Bonferroni" width="130">
+            <el-table-column prop="bonferroni" label="bonferroni" width="130">
             </el-table-column>
-            <el-table-column prop="FDR" label="FDR" width="130">
+            <el-table-column prop="fdr" label="fdr" width="130">
             </el-table-column>
-            <el-table-column prop="Benjamini" label="Benjamini" width="130">
+            <el-table-column prop="benjamini" label="benjamini" width="130">
             </el-table-column>
-            <el-table-column prop="genes" label="Genes'id" width="360">
+            <el-table-column prop="genes" label="genes'id" width="360">
               <template slot-scope="scope">
                 <span @click="toggleGeneDetail(scope.$index)" class="gene-text" :title="scope.row.genes"
                       :class="{ 'expanded': isExpanded[scope.$index] }">
@@ -240,7 +240,7 @@
 <script>
 import { listAestivum} from "@/api/system/aestivum";
 import {listThaliana} from "@/api/system/thaliana";
-
+import * as echarts from 'echarts';
 
 export default {
 
@@ -249,7 +249,17 @@ export default {
     return {
       showTable: false, // 控制表格是否显示的标志
       isExpanded: [], // 记录每一行是否展开的状态
-      tableData: [],
+      tableData: [
+        {pathway:'123',
+          count:'123',
+          bgRatio:'0.1234567881',
+          geneRatio: '1.111111111',
+          pvalue: '1.111111111',
+          bonferroni:'1.111111111',
+          fdr:'1.111111111',
+          benjamini:'1.111111111',
+          genes:'123'}
+      ],
       aestivumList: [],
       thalianaList: [],
       queryParams: {
@@ -285,7 +295,7 @@ export default {
     },
     //  柱状图
     initBarChart() {
-      const enrichedData = this.tableData.map(item => ({
+      const enrichedData = this.thalianaList.map(item => ({
         name: item.Pathway,
         value: parseFloat(item.count),
         pValue: parseFloat(item.pvalue),
@@ -386,8 +396,8 @@ export default {
     },
   },
   mounted() {
-    // this.initBarChart(); // 初始化柱状图
-    // this.initScatterChart(); // 初始化散点图
+    this.initBarChart(); // 初始化柱状图
+    this.initScatterChart(); // 初始化散点图
   }
 
 };
