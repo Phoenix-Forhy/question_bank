@@ -251,6 +251,7 @@ export default {
       isExpanded: [], // 记录每一行是否展开的状态
       tableData: [],
       aestivumList: [],
+      thalianaList: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10000
