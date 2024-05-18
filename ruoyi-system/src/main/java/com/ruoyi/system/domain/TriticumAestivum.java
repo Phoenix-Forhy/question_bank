@@ -12,7 +12,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ljq
  * @date 2024-05-17
  */
-public class TriticumAestivum extends BaseEntity
+public class TriticumAestivum
 {
     private static final long serialVersionUID = 1L;
 

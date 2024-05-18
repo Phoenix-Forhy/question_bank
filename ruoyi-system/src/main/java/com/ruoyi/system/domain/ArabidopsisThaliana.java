@@ -12,7 +12,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2024-05-17
  */
-public class ArabidopsisThaliana extends BaseEntity
+public class ArabidopsisThaliana
 {
     private static final long serialVersionUID = 1L;
 

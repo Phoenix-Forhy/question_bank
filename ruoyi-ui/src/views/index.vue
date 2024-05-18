@@ -251,13 +251,22 @@ export default {
       isExpanded: [], // 记录每一行是否展开的状态
       tableData: [
         {pathway:'123',
-          count:'123',
-          bgRatio:'0.1234567881',
-          geneRatio: '1.111111111',
-          pvalue: '1.111111111',
-          bonferroni:'1.111111111',
-          fdr:'1.111111111',
-          benjamini:'1.111111111',
+          count: 123,
+          bgRatio: 0.1234567881,
+          geneRatio: 1.111111111,
+          pvalue: 1.111111111,
+          bonferroni:1.111111111,
+          fdr:1.111111111,
+          benjamini:1.111111111,
+          genes:'123'},
+        {pathway:'123',
+          count: 70,
+          bgRatio: 0.1234567881,
+          geneRatio: 1.9,
+          pvalue: 1.111111111,
+          bonferroni:1.111111111,
+          fdr:1.111111111,
+          benjamini:1.111111111,
           genes:'123'}
       ],
       aestivumList: [],
@@ -269,22 +278,34 @@ export default {
     };
   },
   created() {
-    this.getAestivumList();
-    this.getThalianaList();
+    // this.getAestivumList();
+    // this.getThalianaList();
   },
   methods: {
     total_plot(){
       console.log("total_plot方法等待编写");
     //   待完成
     },
-    getAestivumList() {
-      listAestivum(this.queryParams).then(response => {
-        this.aestivumList = response.rows;
-        console.log(this.aestivumList);
+    async getAestivumList() {
+      await listAestivum(this.queryParams).then(response => {
+         this.aestivumList = response.rows;
+        // this.tableData[2] = this.tableData[0];
+        // this.tableData[2].pathway = this.tableData[0].pathway;
+        // this.tableData[2].count = this.tableData[0].count;
+        // this.tableData[2].bgRatio = this.tableData[0].bgRatio;
+        // this.tableData[2].geneRatio = this.tableData[0].geneRatio;
+        // this.tableData[2].pvalue = this.tableData[0].pvalue;
+        // this.tableData[2].bonferroni = this.tableData[0].bonferroni;
+        // this.tableData[2].fdr = this.tableData[0].fdr;
+        // this.tableData[2].benjamini = this.tableData[0].benjamini;
+        // this.tableData[2].genes = this.tableData[0].genes;
+
+        console.log("这是当前使用的数据");
+        console.log(this.tableData);
       });
     },
-    getThalianaList() {
-      listThaliana(this.queryParams).then(response => {
+    async getThalianaList() {
+      await listThaliana(this.queryParams).then(response => {
         this.thalianaList = response.rows;
         console.log(this.thalianaList);
       });
@@ -294,9 +315,13 @@ export default {
       this.isExpanded[index] = !this.isExpanded[index];
     },
     //  柱状图
-    initBarChart() {
-      const enrichedData = this.thalianaList.map(item => ({
-        name: item.Pathway,
+    async initBarChart() {
+      await this.getAestivumList();
+      await this.getThalianaList();
+      console.log("这是渲染之前的数据");
+      console.log(this.aestivumList);
+      const enrichedData = this.aestivumList.map(item => ({
+        name: item.pathway,
         value: parseFloat(item.count),
         pValue: parseFloat(item.pvalue),
       })).sort((a, b) => b.pValue - a.pValue);
@@ -345,10 +370,12 @@ export default {
     },
 
     // 散点图
-    initScatterChart() {
-      const scatterData = this.tableData.map(item => ({
-        GeneRatio: parseFloat(item.GeneRatio), // GeneRatio作为X轴
-        Pathway: item.Pathway, // Pathway作为Y轴
+    async initScatterChart() {
+      await this.getAestivumList();
+      await this.getThalianaList();
+      const scatterData = this.aestivumList.map(item => ({
+        GeneRatio: parseFloat(item.geneRatio), // GeneRatio作为X轴
+        Pathway: item.pathway, // Pathway作为Y轴
       }));
 
       const scatterDom = document.getElementById('scatterchart');
