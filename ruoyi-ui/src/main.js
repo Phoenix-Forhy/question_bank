@@ -1,5 +1,7 @@
 import Vue from 'vue'
 
+import Lei from './components/ForLei/Lei.vue'
+
 import Cookies from 'js-cookie'
 
 import Element from 'element-ui'

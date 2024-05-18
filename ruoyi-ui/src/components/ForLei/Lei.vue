@@ -1,10 +1,10 @@
 <template>
   <div id="father" style="width: 100%">
     <!-- 头部样式 -->
-    <div id="app">
+    <div id="lei">
       <div id="app-header" style="display: flex; align-items: center;background-color: #c4c06c;height: 165px;">
         <div id="app-head" style="width: 200px; height: 160px; margin-left: 16px">
-          <img src="@/assets/images/head-log1.png" width="200px" height="160px" style="object-fit: contain" />
+          <img src="\images\head-log1.png" width="200px" height="160px" style="object-fit: contain" />
         </div>
         <div class="app-title" style="
             display: flex;
@@ -39,15 +39,14 @@
         </div>
       </div>
     </div>
-
-
+    <!-- 功能主题 -->
 
     <div class="form-container">
       <!-- 下拉框 -->
       <div class="form-group">
         <label class="form-label">选择物种:</label>
         <select class="form-select" id="genome" data-live-search="true" data-selected-text-format="count" data-size="15"
-                data-actions-box="true">
+          data-actions-box="true">
           <optgroup label="Mustard family">
             <option value="Arabidopsis_thaliana">Arabidopsis thaliana (thale cress)</option>
             <option>Camelina sativa (false flax)</option>
@@ -172,16 +171,15 @@
         <input type="number" id="min_count" class="form-select" value="5">
         <!-- 提交按钮 -->
         <div class="bnir-form-item" >
-          <button id="submit_button" type="button" @click="total_plot">
-            submit
-          </button>
-        </div>
+         <button id="submit_button" type="button" @click="total_plot">
+                  submit
+                </button>
+              </div>
 
       </div>
 
 
     </div>
-
     <!-- 图表 -->
     <div>
       <!-- 表格 -->
@@ -210,7 +208,7 @@
             <el-table-column prop="genes" label="Genes'id" width="360">
               <template slot-scope="scope">
                 <span @click="toggleGeneDetail(scope.$index)" class="gene-text" :title="scope.row.genes"
-                      :class="{ 'expanded': isExpanded[scope.$index] }">
+                  :class="{ 'expanded': isExpanded[scope.$index] }">
                   {{ scope.row.genes | ellipsis }}
                 </span>
                 <div v-if="isExpanded[scope.$index]" class="full-gene-list" v-html="scope.row.genes.replace(/,/g, ', ')">
@@ -232,52 +230,22 @@
       </div>
     </div>
 
-
-
   </div>
 </template>
 
-<script>
-import { listAestivum} from "@/api/system/aestivum";
-import {listThaliana} from "@/api/system/thaliana";
 
+<script>
+import * as echarts from "echarts";
 
 export default {
 
-  name: "Aestivum",
   data() {
     return {
       showTable: false, // 控制表格是否显示的标志
       isExpanded: [], // 记录每一行是否展开的状态
-      tableData: [],
-      aestivumList: [],
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10000
-      },
     };
   },
-  created() {
-    this.getAestivumList();
-    this.getThalianaList();
-  },
   methods: {
-    total_plot(){
-      console.log("total_plot方法等待编写");
-    //   待完成
-    },
-    getAestivumList() {
-      listAestivum(this.queryParams).then(response => {
-        this.aestivumList = response.rows;
-        console.log(this.aestivumList);
-      });
-    },
-    getThalianaList() {
-      listThaliana(this.queryParams).then(response => {
-        this.thalianaList = response.rows;
-        console.log(this.thalianaList);
-      });
-    },
     toggleGeneDetail(index) {
       // 切换当前行的展开状态
       this.isExpanded[index] = !this.isExpanded[index];
@@ -385,13 +353,13 @@ export default {
     },
   },
   mounted() {
-    // this.initBarChart(); // 初始化柱状图
-    // this.initScatterChart(); // 初始化散点图
+    this.initBarChart(); // 初始化柱状图
+    this.initScatterChart(); // 初始化散点图
   }
+
 
 };
 </script>
-
 
 <style scoped>
 .app-title {
@@ -650,4 +618,3 @@ textarea[readonly] {
   background-color: #98b300; /* 鼠标悬停时的背景颜色 */
 }
 </style>
-
